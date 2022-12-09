@@ -1,0 +1,9 @@
+.hide{
+    display: none;
+}
+
+.show{
+    height: 0;
+    position: absolute; 
+    display: block;
+}
