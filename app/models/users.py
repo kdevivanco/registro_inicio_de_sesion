@@ -52,7 +52,7 @@ class User:
         #    flash("Last name must be at least 2 characters.",'email')
         #    is_valid = False
         if not EMAIL_REGEX.match(form_data['email']): 
-            flash("Invalid email address!",'email')
+            flash("Invalid email address!",'error')
             is_valid = False
         if len(form_data['password']) < 8:
             flash("Password must be at least 8 characters.",'email')
@@ -77,7 +77,7 @@ class User:
         if len(results) == 0:
             return True
         else:
-            flash("Email already in database",'email')
+            flash("Email already in database",'error')
             print( 'Email not available')
             return False
 
@@ -119,11 +119,14 @@ class User:
         }
 
         results= connectToMySQL('login_users').query_db(query,data)
+        if len(results) == 0:
+            flash('Usuario inexistente', 'error')
+            return False
         user = results[0]
         
         result = bcrypt.check_password_hash(user['password'],form_data['password'])
         if result == True:
             return user
         else:
-            flash('Invalid credentials')
+            flash('Invalid credentials','error')
             return False
